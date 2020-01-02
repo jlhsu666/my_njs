@@ -14,8 +14,30 @@
 
 var express = require('express');
 var app = express();
+const https = require('https');
+
+
+
+
 
 app.get('/', function (req, res) {
+  https.get('https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0&_=1577942519971', (resp) => {
+    let data = '';
+
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+        data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+        console.log(JSON.parse(data).msgArray['0']['nf']);
+    });
+
+    }).on("error", (err) => {
+    console.log("Error: " + err.message);
+    });
+
   var mytag='<html><body><table border=1><tr><td>姓名</td><td>XX</td></tr><tr><td>學號</td><td>YYY</td></tr><tr><td>地址</td><td>ZZZ</td></tr></table></body></html>';
   res.send(mytag);
 });
