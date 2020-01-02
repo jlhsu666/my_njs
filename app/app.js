@@ -21,6 +21,7 @@ const https = require('https');
 
 
 app.get('/', function (req, res) {
+  var mytag='';
   https.get('https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0&_=1577942519971', (resp) => {
     let data = '';
 
@@ -31,15 +32,18 @@ app.get('/', function (req, res) {
 
     // The whole response has been received. Print out the result.
     resp.on('end', () => {
-        console.log(JSON.parse(data).msgArray['0']['nf']);
+        mytag='<html><body><table border=1><tr><td>公司</td><td>'+JSON.parse(data).msgArray['0'].n
+        + '</td></tr><tr><td>開盤</td><td>' + JSON.parse(data).msgArray['0'].o
+        + '</td></tr><tr><td>最高價</td><td>' + JSON.parse(data).msgArray['0'].h
+        + '</td></tr><tr><td>成交價</td><td>'+ JSON.parse(data).msgArray['0'].z
+        + '</td></tr></table></body></html>';
+        res.send(mytag);
     });
 
     }).on("error", (err) => {
     console.log("Error: " + err.message);
     });
 
-  var mytag='<html><body><table border=1><tr><td>姓名</td><td>XX</td></tr><tr><td>學號</td><td>YYY</td></tr><tr><td>地址</td><td>ZZZ</td></tr></table></body></html>';
-  res.send(mytag);
 });
 
 app.listen(3000, function () {
