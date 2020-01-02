@@ -16,10 +16,6 @@ var express = require('express');
 var app = express();
 const https = require('https');
 
-
-
-
-
 app.get('/', function (req, res) {
   var mytag='';
   https.get('https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_2330.tw&json=1&delay=0&_=1577942519971', (resp) => {
